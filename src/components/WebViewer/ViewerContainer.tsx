@@ -6,7 +6,7 @@ const LazyWebViewer = lazy(() => import('../WebViewer/WebViewer'));
 
 export const HEIGHT_CONSTANT = 0.65;
 
-function ViewerContainer() {
+function ViewerContainer({ visible }) {
     const containerRef = useRef(null) as any;
     const [container, setContainer] = useState({ width: 0, height: 0 });
 
@@ -29,8 +29,9 @@ function ViewerContainer() {
         }
     }, [setContainerSize]);
 
+    console.log('in viewer container')
     return (
-        <el.ViewerContainer ref={containerRef} width={container.width}>
+        <el.ViewerContainer ref={containerRef} width={container.width} visible={visible} >
             <Suspense fallback={<div />}>
                 <LazyWebViewer container={container} />
             </Suspense>

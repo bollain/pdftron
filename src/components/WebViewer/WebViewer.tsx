@@ -54,6 +54,10 @@ function WebViewer({ container }: Props) {
 	const viewer = useRef(null) as any;
 
 	useEffect(() => {
+	let instanceForCleanup;
+	console.log('in use effect')
+
+
 		PdfTron(
 			{
 				licenseKey: WEBVIEWER_LICENSE_KEY,
@@ -86,7 +90,7 @@ function WebViewer({ container }: Props) {
 			viewer.current
 		).then(async (instance) => {
 			const { documentViewer, annotationManager, Annotations, Tools } = instance.Core;
-
+			instanceForCleanup = instance;
 			documentViewer.addEventListener('documentLoaded', () => {
 				const storedAnnotations = getLocalAnnotations();
 				Object.values(storedAnnotations).forEach(annotation => {
@@ -122,6 +126,11 @@ function WebViewer({ container }: Props) {
 			);
 		});
 		// eslint-disable-next-line
+
+		return () => {
+			console.log('cleanup')
+			instanceForCleanup?.UI.dispose();
+		}
 	}, []);
 
 	return (
