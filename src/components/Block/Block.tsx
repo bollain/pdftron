@@ -18,7 +18,7 @@ function Block() {
 					{isOpen ? 'Close' : 'Open'}
 				</span>
 			</button>
-				<ViewerContainer visible={isOpen} />
+				<ViewerContainer visible={true} />
 		</el.BlockStyles>
 	);
 }

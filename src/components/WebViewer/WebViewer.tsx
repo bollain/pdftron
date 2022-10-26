@@ -45,7 +45,7 @@ async function onAnnotationCreated(annotationManager, data) {
 	const annotation = annotations[0];
 	if (annotation) {
 		await annotation.resourcesLoaded();
-		annotation.authorId = data.val().authorId;
+		// annotation.authorId = data.val().authorId;
 		annotationManager.redrawAnnotation(annotation);
 	}
 }
@@ -54,43 +54,39 @@ function WebViewer({ container }: Props) {
 	const viewer = useRef(null) as any;
 
 	useEffect(() => {
-	let instanceForCleanup;
-	console.log('in use effect')
-
 
 		PdfTron(
 			{
 				licenseKey: WEBVIEWER_LICENSE_KEY,
 				path: WEBVIEWER_PATH,
 				filename: 'PDFTron test file',
-				initialDoc: 'http://127.0.0.1:3001/test_file.pdf',
+				initialDoc: 'http://127.0.0.1:3001/demo.pdf',
 				annotationUser: 'Test user',
 				preloadWorker: 'pdf',
 				enableFilePicker: false,
 				enableMeasurement: true,
 				enableOptimizedWorkers: true,
-				disabledElements: [
-					'toolbarGroup-Edit',
-					'dropdown-item-toolbarGroup-Edit',
-					'toolbarGroup-Forms',
-					'dropdown-item-toolbarGroup-Forms',
-					'toolbarGroup-FillAndSign',
-					'dropdown-item-toolbarGroup-FillAndSign',
-					'toolbarGroup-Insert',
-					'dropdown-item-toolbarGroup-Insert',
-					'thumbnailControl',
-					'viewControlsDivider1',
-					'rotateHeader',
-					'rotateClockwiseButton',
-					'rotateCounterClockwiseButton',
-					'stampToolGroupButton',
-					'fileAttachmentToolGroupButton',
-				],
+				// disabledElements: [
+				// 	'toolbarGroup-Edit',
+				// 	'dropdown-item-toolbarGroup-Edit',
+				// 	'toolbarGroup-Forms',
+				// 	'dropdown-item-toolbarGroup-Forms',
+				// 	'toolbarGroup-FillAndSign',
+				// 	'dropdown-item-toolbarGroup-FillAndSign',
+				// 	'toolbarGroup-Insert',
+				// 	'dropdown-item-toolbarGroup-Insert',
+				// 	'thumbnailControl',
+				// 	'viewControlsDivider1',
+				// 	'rotateHeader',
+				// 	'rotateClockwiseButton',
+				// 	'rotateCounterClockwiseButton',
+				// 	'stampToolGroupButton',
+				// 	'fileAttachmentToolGroupButton',
+				// ],
 			},
 			viewer.current
 		).then(async (instance) => {
 			const { documentViewer, annotationManager, Annotations, Tools } = instance.Core;
-			instanceForCleanup = instance;
 			documentViewer.addEventListener('documentLoaded', () => {
 				const storedAnnotations = getLocalAnnotations();
 				Object.values(storedAnnotations).forEach(annotation => {
@@ -128,8 +124,7 @@ function WebViewer({ container }: Props) {
 		// eslint-disable-next-line
 
 		return () => {
-			console.log('cleanup')
-			instanceForCleanup?.UI.dispose();
+			// console.log('cleanup')
 		}
 	}, []);
 
